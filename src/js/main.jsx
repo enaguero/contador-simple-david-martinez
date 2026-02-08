@@ -7,6 +7,8 @@ import SecondsCounter from './components/SecondsCounter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const COUNTER_INTERVAL_MS = 1000;
+
 let counter = 0;
 let intervalId = null;
 let alertTime = null; // Variable para el Bonus de la alerta
@@ -21,10 +23,14 @@ const renderApp = () => {
                 <div className="mt-4 p-3 bg-dark text-white rounded d-inline-block border border-secondary">
                     <label className="me-2">Alertar en segundo:</label>
                     <input 
-                        type="number" 
+                        type="number"
+                        min="0" 
                         placeholder="Ej: 10"
                         className="form-control d-inline-block w-25"
-                        onChange={(e) => alertTime = parseInt(e.target.value)} 
+                        onChange={(e) => {
+                            const value = parseInt(e.target.value);
+                            alertTime = (!isNaN(value) && value >= 0) ? value : null;
+                        }} 
                     />
                 </div>
 
@@ -47,7 +53,7 @@ const startCounter = () => {
     intervalId = setInterval(() => {
         counter++;
         renderApp(); 
-    }, 1000);
+    }, COUNTER_INTERVAL_MS);
 };
 
 const stopCounter = () => {
